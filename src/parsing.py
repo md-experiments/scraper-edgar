@@ -189,10 +189,19 @@ def extract_item1(start: int, end: int, form_type: str = '10-k'):
 
 
 if __name__ == '__main__':
-    args = docopt(__doc__)
-    if args['clean-filings']:
-        clean_filings(int(args['--start']), int(args['--end']), args['--form-type'])
-    elif args['extract-mda']:
-        extract_mda(int(args['--start']), int(args['--end']), args['--form-type'])
-    elif args['extract-item1']:
-        extract_item1(int(args['--start']), int(args['--end']), args['--form-type'])
+    import argparse
+    parser = argparse.ArgumentParser(description='Clean and extract corporate filings')
+    parser.add_argument('--clean-filings', action='store_true', help='Clean filings')
+    parser.add_argument('--extract-mda', action='store_true', help='Extract MD&A section')
+    parser.add_argument('--extract-item1', action='store_true', help='Extract Item 1 section')
+    parser.add_argument('--start', type=int, default=1996, help='Start year for scraping')
+    parser.add_argument('--end', type=int, default=2020, help='End year for scraping')
+    parser.add_argument('--form-type', type=str, default='10-k', help='Form type (one of: 8-k, 10-k, 10-k/a, 10-q, 10-q/a)')
+    #args = parser.parse_args()
+    args = vars(parser.parse_args())
+    if args['clean_filings']:
+        clean_filings(int(args['start']), int(args['end']), args['form_type'])
+    elif args['extract_mda']:
+        extract_mda(int(args['start']), int(args['end']), args['form_type'])
+    elif args['extract_item1']:
+        extract_item1(int(args['start']), int(args['end']), args['form_type'])

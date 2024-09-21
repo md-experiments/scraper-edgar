@@ -230,7 +230,9 @@ def download_filings(user_agent: str, start: int, end: int,
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description='Download corporate filings from SEC EDGAR')
-    parser.add_argument('--action', choices=['download-index', 'count-filings', 'download-filings'])
+    parser.add_argument('--download-index', action='store_true', help='Download index files')
+    parser.add_argument('--count-filings', action='store_true', help='Count number of filings')
+    parser.add_argument('--download-filings', action='store_true', help='Download filings')
     parser.add_argument('--user-agent', default='NAME EMAIL@GMAIL.COM')
     parser.add_argument('--start', type=int, default=1996)
     parser.add_argument('--end', type=int, default=2020)
@@ -240,10 +242,12 @@ if __name__ == '__main__':
     import os
     os.makedirs('output/index', exist_ok=True)
     print(args)
-    if args['action'] == 'download-index':
+    if args['download_index']:
         download_index(args['user_agent'], int(args['start']), int(args['end']))
-    elif args['action'] == 'count-filings':
+    elif args['count_filings']:
         count_filings(int(args['start']), int(args['end']), args['form_type'])
-    elif args['action'] == 'download-filings':
+    elif args['download_filings']:
+        assert args['form_type'] in ['10-k', '10-k/a', '10-q', '10-q/a'], 'Form not implemented! Choose one of 10-k, 10-k/a, 10-q, 10-q/a.'
+        os.makedirs(f'output/index/{args["form_type"]}', exist_ok=True)
         download_filings(args['user_agent'], int(args['start']), int(args['end']), 
                          args['form_type'], int(args['no_of_filings']))
