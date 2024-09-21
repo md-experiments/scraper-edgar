@@ -228,10 +228,22 @@ def download_filings(user_agent: str, start: int, end: int,
 
 
 if __name__ == '__main__':
-    args = docopt(__doc__)
-    if args['download-index']:
-        download_index(args['--user-agent'], int(args['--start']), int(args['--end']))
-    elif args['count-filings']:
-        count_filings(int(args['--start']), int(args['--end']), args['--form-type'])
-    elif args['download-filings']:
-        download_filings(args['--user-agent'], int(args['--start']), int(args['--end']), args['--form-type'], int(args['--no-of-filings']))
+    import argparse
+    parser = argparse.ArgumentParser(description='Download corporate filings from SEC EDGAR')
+    parser.add_argument('--action', choices=['download-index', 'count-filings', 'download-filings'])
+    parser.add_argument('--user-agent', default='NAME EMAIL@GMAIL.COM')
+    parser.add_argument('--start', type=int, default=1996)
+    parser.add_argument('--end', type=int, default=2020)
+    parser.add_argument('--form-type', default='10-k')
+    parser.add_argument('-N', '--no-of-filings', type=int, default=10)
+    args = vars(parser.parse_args())
+    import os
+    os.makedirs('output/index', exist_ok=True)
+    print(args)
+    if args['action'] == 'download-index':
+        download_index(args['user_agent'], int(args['start']), int(args['end']))
+    elif args['action'] == 'count-filings':
+        count_filings(int(args['start']), int(args['end']), args['form_type'])
+    elif args['action'] == 'download-filings':
+        download_filings(args['user_agent'], int(args['start']), int(args['end']), 
+                         args['form_type'], int(args['no_of_filings']))

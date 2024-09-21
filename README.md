@@ -12,18 +12,18 @@ pip install -r requirements.txt
 
 2. Download index files from SEC EDGAR for the period `--start` to `--end` (write to `output/index`).
 ```sh
-python src/scraping.py download-index --user-agent 'ORG_NAME MAIL_ADDRESS' --start 2004 --end 2022
+python src/scraping.py --action download-index --user-agent "NAME EMAIL@EMAIL.COM" --start 2020 --end 2024
 ```
 
 3. Compute number of available filings (write to `output`).
 ```sh
-python src/scraping.py count-filings --start 1996 --end 2022 --form-type 10-k
+python src/scraping.py --action count-filings --start 2020 --end 2024 --form-type 10-k
 ```
 
 4. Download `--form-type` filings (write to `output/filings/--form-type`).
 *Note: restrict amount of filings per quarter via `-N` or set to sufficiently high number to download all available filings, e.g., 32,000 for 8-K, 10,000 for 10-K or 13,000 for 10-Q and extract metadata from all downlaoded filings (write to `output/filings/--form-type/metadata.csv`).*
 ```sh
-python src/scraping.py download-filings --user-agent 'ORG_NAME MAIL_ADDRESS' --start 2012 --end 2013 --form-type 10-k -N 10000
+python src/scraping.py --action download-filings --user-agent "NAME EMAIL@EMAIL.COM" --start 2020 --end 2024 --form-type 10-k -N 10000
 ```
 
 ### Cleaning & Parsing
