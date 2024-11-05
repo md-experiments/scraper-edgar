@@ -33,6 +33,8 @@ from parsing_patterns import (PAT_8K, PAT_10K, PAT_10KA, PAT_10Q, PAT_10QA,
                               PAT_FNAME, PAT_META, PAT_HEADER_END)
 
 
+
+
 def download_index(user_agent: str, start: int, end: int):
     """ Download index files from SEC EDGAR
     :param str user_agent:
@@ -183,6 +185,7 @@ def download_filings(user_agent: str, start: int, end: int,
                                             path_file.open('w', encoding='utf-8').write(txt)
 
                                             meta = {}
+                                            # initialize meta dict with None values
                                             for k in PAT_META.keys():
                                                 meta[k] = None
                                             with path_file.open('r', encoding='utf-8') as f:
